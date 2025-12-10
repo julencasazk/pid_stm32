@@ -6,8 +6,8 @@
  *      https://github.com/Tellicious/ArduPID-Library
  */
 
-#ifndef __PID_H__
-#define __PID_H__
+#ifndef __PID_STM32_H__
+#define __PID_STM32_H__
 
 #include <stdint.h>
 
@@ -413,5 +413,5 @@ pid_err_t pid_set_proportional_on_meas(pid_controller_t* pid_handle, pid_proport
 }
 #endif
 
-#endif //__PID_H__
+#endif //__PID_STM32_H__
 
