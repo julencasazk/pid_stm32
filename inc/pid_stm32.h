@@ -6,8 +6,8 @@
  *      https://github.com/Tellicious/ArduPID-Library
  */
 
-#ifndef __PID_STM32_H__
-#define __PID_STM32_H__
+#ifndef _PID_STM32_H__
+#define _PID_STM32_H__
 
 #include <stdint.h>
 
@@ -28,46 +28,46 @@ typedef float pid_float;
 #define clip(in,inf,sup) ((in)<(inf)?(inf):((in)>(sup)?(sup):(in)))
 
 // Error codes
-#define PID_OK  0
-#define PID_ERR_INVALID_ARGS (-1)
-#define PID_ERR_MANUAL_MODE_ON (-2)
+#define _PID_OK  0
+#define _PID_ERR_INVALID_ARGS (-1)
+#define _PID_ERR_MANUAL_MODE_ON (-2)
 
 typedef enum {
-    PID_MODE_MANUAL = 0,
-    PID_MODE_AUTO = 1
-} pid_mode_enum;
+    _PID_MODE_MANUAL = 0,
+    _PID_MODE_AUTO = 1
+} PID_mode_TypeDef;
 
 typedef enum {
-    PID_SMOOTH_MANUAL_TO_AUTO_OFF = 0,
-    PID_SMOOTH_MANUAL_TO_AUTO_ON = 1
-} pid_smooth_manual_to_auto_enum;
+    _PID_SMOOTH_MANUAL_TO_AUTO_OFF = 0,
+    _PID_SMOOTH_MANUAL_TO_AUTO_ON = 1
+} PID_smooth_manual_to_auto_TypeDef;
 
 typedef enum {
-    PID_SMOOTH_TUNING_OFF = 0,
-    PID_SMOOTH_TUNING_ON = 1
-} pid_smooth_tuning_enum;
+    _PID_SMOOTH_TUNING_OFF = 0,
+    _PID_SMOOTH_TUNING_ON = 1
+} PID_smooth_tuning_TypeDef;
 
 typedef enum {
-    PID_ANTI_WINDUP_OFF = 0,
-    PID_ANTI_WINDUP_INTEGRATOR_CLAMPING = 1,
-	PID_ANTI_WINDUP_BACK_CALCULATION =2
-} pid_anti_windup_enum;
+    _PID_ANTI_WINDUP_OFF = 0,
+    _PID_ANTI_WINDUP_INTEGRATOR_CLAMPING = 1,
+	_PID_ANTI_WINDUP_BACK_CALCULATION =2
+} PID_anti_windup_TypeDef;
 
 typedef enum {
-    PID_DERIVATIVE_ON_MEASURE_OFF = 0,
-    PID_DERIVATIVE_ON_MEASURE_ON = 1
-} pid_derivative_on_meas_enum;
+    _PID_DERIVATIVE_ON_MEASURE_OFF = 0,
+    _PID_DERIVATIVE_ON_MEASURE_ON = 1
+} PID_derivative_on_meas_TypeDef;
 
 typedef enum {
-    PID_DISCRETE_FORWARD_EULER = 0,
-    PID_DISCRETE_BACKWARD_EULER = 1,
-    PID_DISCRETE_TUSTIN = 2
-} pid_discretization_method_enum;
+    _PID_DISCRETE_FORWARD_EULER = 0,
+    _PID_DISCRETE_BACKWARD_EULER = 1,
+    _PID_DISCRETE_TUSTIN = 2
+} PID_discretization_method_TypeDef;
 
 typedef enum {
-	PID_PROPORTIONAL_ON_MEASURE_OFF = 0,
-	PID_PROPORTIONAL_ON_MEASURE_ON = 1
-} pid_proportional_on_meas_enum;
+	_PID_PROPORTIONAL_ON_MEASURE_OFF = 0,
+	_PID_PROPORTIONAL_ON_MEASURE_ON = 1
+} PID_proportional_on_meas_TypeDef;
 
 /*
  * pid_float gives 7 bits precision.
@@ -120,21 +120,21 @@ typedef struct {
     pid_float min_output;
 
     // Config enums
-    pid_mode_enum mode;
-    pid_derivative_on_meas_enum derivative_on_meas;
-    pid_proportional_on_meas_enum proportional_on_meas;
-    pid_anti_windup_enum anti_windup;
+    PID_mode_TypeDef mode;
+    PID_derivative_on_meas_TypeDef derivative_on_meas;
+    PID_proportional_on_meas_TypeDef proportional_on_meas;
+    PID_anti_windup_TypeDef anti_windup;
     // TODO they do nothing as of now
-    pid_smooth_manual_to_auto_enum smooth_manual_to_auto;
-    pid_smooth_tuning_enum smooth_tuning;
+    PID_smooth_manual_to_auto_TypeDef smooth_manual_to_auto;
+    PID_smooth_tuning_TypeDef smooth_tuning;
 
 
-    pid_discretization_method_enum i_method;
-    pid_discretization_method_enum d_method;
+    PID_discretization_method_TypeDef i_method;
+    PID_discretization_method_TypeDef d_method;
 
     /*
      * Back-calculation anti-windup
-     * If PID_ANTI_RESET_WINDUP_BACK_CALCULATION is selected,
+     * If _PID_ANTI_RESET_WINDUP_BACK_CALCULATION is selected,
      * integral contribution will be calculated like:
      *
      * 		I[k] += Kb * (u_sat[k] - u_unsat[k])
@@ -201,13 +201,13 @@ pid_err_t pid_set_clampling(pid_controller_t* pid_handle, pid_float max, pid_flo
  * @param 	pid_handle:		already created PID Object
  * @param 	anti_windup:	anti-windup method selector.
  * 							It can have the following values:
- *    						@arg PID_ANTI_WINDUP_OFF:					No anti-windup
- *   							@arg PID_ANTI_WINDUP_INTEGRATOR_CLAMPING:	Integral state is clamped when output saturates
- *   							@arg PID_ANTI_WINDUP_BACK_CALCULATION:		Back-calculation anti-windup method
+ *    						@arg _PID_ANTI_WINDUP_OFF:					No anti-windup
+ *   							@arg _PID_ANTI_WINDUP_INTEGRATOR_CLAMPING:	Integral state is clamped when output saturates
+ *   							@arg _PID_ANTI_WINDUP_BACK_CALCULATION:		Back-calculation anti-windup method
  *
  * @retVal:					PID error code
  */
-pid_err_t pid_set_anti_windup(pid_controller_t* pid_handle, pid_anti_windup_enum anti_windup);
+pid_err_t pid_set_anti_windup(pid_controller_t* pid_handle, PID_anti_windup_TypeDef anti_windup);
 
 /*
  * @brief	Change the PID controller's gains, low-pass filter time constant and sampling time. It is used by pid_init internally.
@@ -300,19 +300,19 @@ pid_float pid_run(pid_controller_t* pid_handle, pid_float setpoint, pid_float me
  * @param 	pid_handle:		already created PID Object
  * @param 	method:			discretization method
  * 							It can have the following values:
- * 							@arg PID_DISCRETE_FORWARD_EULER: 	Laplace 's' is replaced by:
+ * 							@arg _PID_DISCRETE_FORWARD_EULER: 	Laplace 's' is replaced by:
  * 																	Ts * z^-1
  * 																s=-------------
  * 																	  1-z^-1
  * 															 	It's reacts the most abruptly, only use
  * 															 	if reaction speed is important.
- *							@arg PID_DISCRETE_BACKWARD_EULER: 	Laplace 's' is replaced by:
+ *							@arg _PID_DISCRETE_BACKWARD_EULER: 	Laplace 's' is replaced by:
  *																	1-z^-1
  *																s=-----------
  *																	  Ts
  *																Always stable in integral component, tends to give
  *																a more dampened response.
- *							@arg PID_DISCRETE_TUSTIN:			Laplace 's' is replaced by:
+ *							@arg _PID_DISCRETE_TUSTIN:			Laplace 's' is replaced by:
  *																	2*(1-z^-1)
  *																s=--------------
  *																	Ts*(1+z^-1)
@@ -321,7 +321,7 @@ pid_float pid_run(pid_controller_t* pid_handle, pid_float setpoint, pid_float me
  * @retVal:					PID error code
  *
  */
-pid_err_t pid_set_discretization_method(pid_controller_t* pid_handle, pid_discretization_method_enum method);
+pid_err_t pid_set_discretization_method(pid_controller_t* pid_handle, PID_discretization_method_TypeDef method);
 
 /*
  * @brief 	Set the discretization approximation method used in the calculation of Integral component
@@ -329,19 +329,19 @@ pid_err_t pid_set_discretization_method(pid_controller_t* pid_handle, pid_discre
  * @param 	pid_handle:		already created PID Object
  * @param 	method:			discretization method
  * 							It can have the following values:
- * 							@arg PID_DISCRETE_FORWARD_EULER: 	Laplace 's' is replaced by:
+ * 							@arg _PID_DISCRETE_FORWARD_EULER: 	Laplace 's' is replaced by:
  * 																	Ts * z^-1
  * 																s=-------------
  * 																	  1-z^-1
  * 															 	It's reacts the most abruptly, only use
  * 															 	if reaction speed is important.
- *							@arg PID_DISCRETE_BACKWARD_EULER: 	Laplace 's' is replaced by:
+ *							@arg _PID_DISCRETE_BACKWARD_EULER: 	Laplace 's' is replaced by:
  *																	1-z^-1
  *																s=-----------
  *																	  Ts
  *																Always stable in integral component, tends to give
  *																a more dampened response.
- *							@arg PID_DISCRETE_TUSTIN:			Laplace 's' is replaced by:
+ *							@arg _PID_DISCRETE_TUSTIN:			Laplace 's' is replaced by:
  *																	2*(1-z^-1)
  *																s=--------------
  *																	Ts*(1+z^-1)
@@ -350,7 +350,7 @@ pid_err_t pid_set_discretization_method(pid_controller_t* pid_handle, pid_discre
  * @retVal:					PID error code
  *
  */
-pid_err_t pid_set_integral_discretization_method(pid_controller_t* pid_handle, pid_discretization_method_enum method);
+pid_err_t pid_set_integral_discretization_method(pid_controller_t* pid_handle, PID_discretization_method_TypeDef method);
 
 /*
  * @brief 	Set the discretization approximation method used in the calculation of  Derivative component
@@ -358,19 +358,19 @@ pid_err_t pid_set_integral_discretization_method(pid_controller_t* pid_handle, p
  * @param 	pid_handle:		already created PID Object
  * @param 	method:			discretization method
  * 							It can have the following values:
- * 							@arg PID_DISCRETE_FORWARD_EULER: 	Laplace 's' is replaced by:
+ * 							@arg _PID_DISCRETE_FORWARD_EULER: 	Laplace 's' is replaced by:
  * 																	Ts * z^-1
  * 																s=-------------
  * 																	  1-z^-1
  * 															 	It's reacts the most abruptly, only use
  * 															 	if reaction speed is important.
- *							@arg PID_DISCRETE_BACKWARD_EULER: 	Laplace 's' is replaced by:
+ *							@arg _PID_DISCRETE_BACKWARD_EULER: 	Laplace 's' is replaced by:
  *																	1-z^-1
  *																s=-----------
  *																	  Ts
  *																Always stable in integral component, tends to give
  *																a more dampened response.
- *							@arg PID_DISCRETE_TUSTIN:			Laplace 's' is replaced by:
+ *							@arg _PID_DISCRETE_TUSTIN:			Laplace 's' is replaced by:
  *																	2*(1-z^-1)
  *																s=--------------
  *																	Ts*(1+z^-1)
@@ -379,7 +379,7 @@ pid_err_t pid_set_integral_discretization_method(pid_controller_t* pid_handle, p
  * @retVal:					PID error code
  *
  */
-pid_err_t pid_set_derivative_discretization_method(pid_controller_t* pid_handle, pid_discretization_method_enum method);
+pid_err_t pid_set_derivative_discretization_method(pid_controller_t* pid_handle, PID_discretization_method_TypeDef method);
 
 
 /*
@@ -388,12 +388,12 @@ pid_err_t pid_set_derivative_discretization_method(pid_controller_t* pid_handle,
  * @param 	pid_handle:				already created PID Object
  * @param	derivative_on_meas:		derivative behaviour selector.
  * 									Can have the following values:
- *    								@arg	PID_DERIVATIVE_ON_MEASURE_OFF:	Derivative will act on e(t) error.
- *   								@arg	PID_DERIVATIVE_ON_MEASURE_ON:	Derivative will act only on measurement.
+ *    								@arg	_PID_DERIVATIVE_ON_MEASURE_OFF:	Derivative will act on e(t) error.
+ *   								@arg	_PID_DERIVATIVE_ON_MEASURE_ON:	Derivative will act only on measurement.
  *
  * @retVal:							PID error code
  */
-pid_err_t pid_set_derivative_on_meas(pid_controller_t* pid_handle, pid_derivative_on_meas_enum derivative_on_meas);
+pid_err_t pid_set_derivative_on_meas(pid_controller_t* pid_handle, PID_derivative_on_meas_TypeDef derivative_on_meas);
 
 
 /*
@@ -402,16 +402,16 @@ pid_err_t pid_set_derivative_on_meas(pid_controller_t* pid_handle, pid_derivativ
  * @param 	pid_handle:				already created PID Object
  * @param	derivative_on_meas:		derivative behaviour selector.
  * 									Can have the following values:
- *    								@arg	PID_PROPORTIONAL_ON_MEASURE_OFF:	Proportional gain will act on e(t) error.
- *   								@arg	PID_PROPORTIONAL_ON_MEASURE_ON:		Proportional gain will act only on measurement.
+ *    								@arg	_PID_PROPORTIONAL_ON_MEASURE_OFF:	Proportional gain will act on e(t) error.
+ *   								@arg	_PID_PROPORTIONAL_ON_MEASURE_ON:		Proportional gain will act only on measurement.
  *
  * @retVal:							PID error code
  */
-pid_err_t pid_set_proportional_on_meas(pid_controller_t* pid_handle, pid_proportional_on_meas_enum proportional_on_meas);
+pid_err_t pid_set_proportional_on_meas(pid_controller_t* pid_handle, PID_proportional_on_meas_TypeDef proportional_on_meas);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif //__PID_STM32_H__
+#endif //_PID_STM32_H__
 
