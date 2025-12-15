@@ -193,7 +193,7 @@ pid_err_t pid_reset(pid_controller_t* pid_handle);
  *
  * @retVal 					PID error code
  */
-pid_err_t pid_set_clampling(pid_controller_t* pid_handle, pid_float max, pid_float min);
+pid_err_t pid_set_clamping(pid_controller_t* pid_handle, pid_float max, pid_float min);
 
 /*
  * @brief 	Set anti-windup method

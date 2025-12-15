@@ -39,14 +39,14 @@ pid_err_t pid_init(pid_controller_t* pid_handle, pid_float kp, pid_float ki, pid
 
 	err = pid_set_derivative_discretization_method(pid_handle, _PID_DISCRETE_TUSTIN);
 	err = pid_set_integral_discretization_method(pid_handle, _PID_DISCRETE_BACKWARD_EULER);
-    err = pid_set_clampling(pid_handle, 1e6f, -1e6f);
+    err = pid_set_clamping(pid_handle, 1e6f, -1e6f);
     err = pid_reset(pid_handle);
 
     return err;
 }
 
 
-pid_err_t pid_set_clampling(pid_controller_t* pid_handle, pid_float max, pid_float min)
+pid_err_t pid_set_clamping(pid_controller_t* pid_handle, pid_float max, pid_float min)
 {
 	if (max <= min) return _PID_ERR_INVALID_ARGS;
 
